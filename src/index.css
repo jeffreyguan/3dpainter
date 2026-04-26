@@ -70,6 +70,10 @@ body {
   cursor: cell;
 }
 
+.drawing-canvas-eraser {
+  cursor: cell;
+}
+
 .generate-scene-button {
   min-width: 180px;
   height: 44px;
@@ -109,14 +113,16 @@ body {
 }
 
 .mode-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
   height: 36px;
-  padding: 0 12px;
+  padding: 0;
   border: 0;
   border-right: 1px solid #d0d0d0;
   background: #ffffff;
   color: #111111;
-  font: inherit;
-  font-size: 14px;
   cursor: pointer;
 }
 
@@ -127,6 +133,16 @@ body {
 .mode-button.is-active {
   background: #111111;
   color: #ffffff;
+}
+
+.mode-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .color-switch {

@@ -11,7 +11,42 @@ const MAX_LINE_WIDTH = 10;
 const DRAWING_MODES = {
   brush: "brush",
   bucket: "bucket",
+  eraser: "eraser",
 };
+const MODE_OPTIONS = [
+  { mode: DRAWING_MODES.brush, label: "Brush" },
+  { mode: DRAWING_MODES.bucket, label: "Bucket" },
+  { mode: DRAWING_MODES.eraser, label: "Eraser" },
+];
+
+function ModeIcon({ mode }) {
+  if (mode === DRAWING_MODES.brush) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="mode-icon">
+        <path d="M14.7 4.2l5.1 5.1-8.9 8.9H5.8v-5.1l8.9-8.9z" />
+        <path d="M4.5 19.5h7" />
+      </svg>
+    );
+  }
+
+  if (mode === DRAWING_MODES.bucket) {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="mode-icon">
+        <path d="M7 5l10 10-5 5L2 10l5-5z" />
+        <path d="M7 5l3-3 10 10" />
+        <path d="M18 17c0 1.4 1.1 2.5 2.5 2.5S23 18.4 23 17c0-1-1.3-3.1-2.5-4.7C19.3 13.9 18 16 18 17z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className="mode-icon">
+      <path d="M15.5 4.5l5 5-8.7 8.7H6.8l-3.3-3.3 12-10.4z" />
+      <path d="M11.8 18.2H21" />
+      <path d="M12.3 7.3l4.4 4.4" />
+    </svg>
+  );
+}
 
 function Toolbar({ color, mode, onColorChange, onModeChange, width, setWidth }) {
   function handleWidthChange(event) {
@@ -27,20 +62,18 @@ function Toolbar({ color, mode, onColorChange, onModeChange, width, setWidth }) 
   return (
     <div className="toolbar">
       <div className="mode-switcher" aria-label="Drawing mode">
-        <button
-          type="button"
-          className={`mode-button${mode === DRAWING_MODES.brush ? " is-active" : ""}`}
-          onClick={() => onModeChange(DRAWING_MODES.brush)}
-        >
-          brush
-        </button>
-        <button
-          type="button"
-          className={`mode-button${mode === DRAWING_MODES.bucket ? " is-active" : ""}`}
-          onClick={() => onModeChange(DRAWING_MODES.bucket)}
-        >
-          bucket
-        </button>
+        {MODE_OPTIONS.map((option) => (
+          <button
+            key={option.mode}
+            type="button"
+            className={`mode-button${mode === option.mode ? " is-active" : ""}`}
+            onClick={() => onModeChange(option.mode)}
+            aria-label={option.label}
+            title={option.label}
+          >
+            <ModeIcon mode={option.mode} />
+          </button>
+        ))}
       </div>
 
       {COLORS.map((switchColor) => (
@@ -195,7 +228,7 @@ function Canvas({ canvasRef, color, mode, width }) {
       return;
     }
 
-    context.strokeStyle = color;
+    context.strokeStyle = mode === DRAWING_MODES.eraser ? "#ffffff" : color;
     isDrawingRef.current = true;
     canvas.setPointerCapture(event.pointerId);
     context.beginPath();
