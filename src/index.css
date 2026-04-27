@@ -43,6 +43,10 @@ body {
   font-size: 18px;
 }
 
+.drawing-view.is-hidden {
+  display: none;
+}
+
 .canvas-area {
   display: flex;
   align-items: center;
@@ -90,6 +94,31 @@ body {
 
 .generate-scene-button:hover {
   background: #2a2a2a;
+}
+
+.viewer-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.back-to-drawing-button {
+  align-self: flex-start;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #111111;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.back-to-drawing-button:hover {
+  background: #eeeeee;
 }
 
 .toolbar-area {

@@ -312,8 +312,9 @@ export default function App() {
 
   return (
     <main className="app">
-      { !is3dView && <><h1>3D Painter</h1>
-      <section className="toolbar-area">
+      <div className={`drawing-view${is3dView ? " is-hidden" : ""}`}>
+        <h1>3D Painter</h1>
+        <section className="toolbar-area">
         <Toolbar
           color={color}
           mode={mode}
@@ -322,23 +323,34 @@ export default function App() {
           width={width}
           setWidth={setWidth}
         />
-      </section>
-      <section className="canvas-panel">
-        <div className="canvas-area">
-          <Container canvasRef={sideCanvasRef} color={color} mode={mode} width={width} label="side view:" />
-          <Container canvasRef={frontCanvasRef} color={color} mode={mode} width={width} label="front view:" />
-          <Container canvasRef={topCanvasRef} color={color} mode={mode} width={width} label="top view:" />
-        </div>
-        <button 
-        type="button" className="generate-scene-button"
-        onClick={generate}
-        >
-          generate scene
-        </button>
-      </section> </>}
-      { is3dView && <>
-        <Viewer points={pointcloud} />
-      </>}
+        </section>
+        <section className="canvas-panel">
+          <div className="canvas-area">
+            <Container canvasRef={sideCanvasRef} color={color} mode={mode} width={width} label="side view:" />
+            <Container canvasRef={frontCanvasRef} color={color} mode={mode} width={width} label="front view:" />
+            <Container canvasRef={topCanvasRef} color={color} mode={mode} width={width} label="top view:" />
+          </div>
+          <button
+            type="button"
+            className="generate-scene-button"
+            onClick={generate}
+          >
+            generate scene
+          </button>
+        </section>
+      </div>
+      {is3dView && (
+        <section className="viewer-panel">
+          <button
+            type="button"
+            className="back-to-drawing-button"
+            onClick={() => setIs3dView(false)}
+          >
+            back
+          </button>
+          <Viewer points={pointcloud} />
+        </section>
+      )}
     </main>
   );
 }
