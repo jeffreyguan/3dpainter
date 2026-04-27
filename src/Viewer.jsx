@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { MarchingCubes } from 'three/addons/objects/MarchingCubes.js';
+import { MarchingCubes } from "three/addons/objects/MarchingCubes.js";
 
 function getPointCloudCenter(points) {
   if (points.length === 0) {
@@ -47,20 +47,41 @@ export default function Viewer({ points = [] }) {
     mount.appendChild(renderer.domElement);
     scene.background = new THREE.Color(0xffffff);
 
+    scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 2, 3);
+    scene.add(light);
+
     camera.position.z = 500;
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.target.set(0, 0, 0);
     const center = getPointCloudCenter(points);
 
-    for (const point of points) {
-      const geometry = new THREE.BoxGeometry(8, 8, 8);
-      const material = new THREE.MeshBasicMaterial({ color: 0x111111 });
-      const box = new THREE.Mesh(geometry, material);
+    const resolution = 48;
+    const material = new THREE.MeshStandardMaterial({
+      color: 0x111111,
+      roughness: 0.55,
+      metalness: 0.05,
+    });
 
-      box.position.set(point.x - center.x, -point.y - center.y, point.z - center.z);
-      scene.add(box);
+    const surface = new MarchingCubes(resolution, material);
+    surface.position.set(0, 0, 0);
+    surface.scale.set(220, 220, 220);
+    surface.isolation = 24;
+    surface.reset();
+
+    for (const point of points) {
+      const x = ((point.x - center.x) / 420) + 0.5;
+      const y = ((-point.y - center.y) / 420) + 0.5;
+      const z = ((point.z - center.z) / 420) + 0.5;
+
+      surface.addBall(x, y, z, 0.08, 12);
     }
+
+    surface.update();
+    scene.add(surface);
 
     function animate() {
       controls.update();

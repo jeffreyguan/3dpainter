@@ -1,4 +1,4 @@
-const DEFAULT_STEP = 10;
+const DEFAULT_STEP = 5;
 const DEFAULT_SAMPLE_RADIUS = 5;
 const WHITE_THRESHOLD = 250;
 
